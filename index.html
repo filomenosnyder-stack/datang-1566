@@ -519,10 +519,11 @@ textarea.dt-in { min-height: 62px; }
 .dt-cover {
   position: absolute; inset: 0; z-index: 60;
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 2.2rem 1.4rem;
+  align-items: center; justify-content: flex-start;   /* ⚠ 贴顶 —— 居中会让上下空一大片，图被压小 */
+  padding: 1.2rem 1.2rem 1.5rem;
+  overflow-y: auto;
   background:
-    radial-gradient(ellipse 70% 60% at 50% 40%, rgba(143, 29, 23, 0.22), transparent 72%),
+    radial-gradient(ellipse 70% 60% at 50% 30%, rgba(143, 29, 23, 0.22), transparent 72%),
     linear-gradient(180deg, #0d0b09, #060505);
   cursor: pointer;
   transition: opacity .85s ease, transform 1.15s cubic-bezier(.4,0,.2,1), filter .85s ease;
@@ -534,8 +535,8 @@ textarea.dt-in { min-height: 62px; }
   pointer-events: none;
 }
 .dt-cover img {
-  max-height: 62vh;
-  max-width: 88%;
+  max-height: 76vh;
+  max-width: 94%;
   border: 1px solid rgba(214, 180, 92, 0.32);
   border-radius: 2px;
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.82), 0 0 46px rgba(143, 29, 23, 0.24);
@@ -647,7 +648,10 @@ textarea.dt-in { min-height: 62px; }
   <section class="dt-video">
     <video controls preload="metadata" playsinline
            src="https://filomenosnyder-stack.github.io/datang-1566/video/intro.mp4"></video>
-    <p class="dt-vcap"><b>当他双肩扛起大明天下之时</b>　二〇〇七 · 张黎</p>
+    <p class="dt-vcap">
+      <b>当他双肩扛起大明天下之时</b><br>
+      嘉靖三十九年，一冬无雪。改稻为桑的国策落到浙江——堤是四月决的，账册是八月进京的。
+    </p>
   </section>
 
   <nav class="dt-nav" id="dtNav">
