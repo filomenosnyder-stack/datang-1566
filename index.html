@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大明王朝1566 · 谁都可以演</title>
+<style>
+/* ═══════════════════════════════════════════════════
+   大明王朝1566 · 前端
+   调子：西苑夜里的灯 —— 墨底、朱砂、鎏金、大量留白
+   ⚠ 页签只用 JS 切（这平台不认纯 CSS radio）
+   ⚠ 面板 id 一律 p- 前缀，别和表单字段撞
+   ⚠ 图片/视频走绝对 URL（同一份 HTML 既进仓库当 Pages，又进卡里）
+   ═══════════════════════════════════════════════════ */
+
+.dt {
+  --ink0: #0b0a08;
+  --ink1: #131009;;
+  --ink2: #1a1611;
+  --ink3: #221c15;
+  --line: #383024;
+  --line2: #4a3f2e;
+  --zhu: #8f1d17;
+  --zhu2: #c0392b;
+  --zhu3: #e05a4a;
+  --gold: #a8873f;
+  --gold2: #d6b45c;
+  --gold3: #f0dc9a;
+  --txt: #e8e0cf;
+  --txt2: #a89c86;
+  --txt3: #6d6355;
+
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+  color: var(--txt);
+  background: var(--ink0);
+  line-height: 1.9;
+  font-size: 15.5px;
+  max-width: 980px;
+  margin: 0 auto;
+  border-radius: 3px;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.dt *, .dt *::before, .dt *::after { box-sizing: border-box; }
+.dt img { max-width: 100%; }
+
+/* ══════════ 首屏 ══════════ */
+.dt-hero {
+  position: relative;
+  padding: 4.2rem 1.5rem 3.4rem;
+  text-align: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 62% 52% at 50% 16%, rgba(143, 29, 23, 0.34), transparent 70%),
+    radial-gradient(ellipse 90% 70% at 50% 120%, rgba(168, 135, 63, 0.13), transparent 70%),
+    linear-gradient(180deg, #17130e 0%, var(--ink0) 88%);
+  border-bottom: 1px solid var(--line);
+}
+/* 帷幕的竖纹 */
+.dt-hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(90deg,
+    rgba(214, 180, 92, 0.045) 0 1px, transparent 1px 6px);
+  pointer-events: none;
+}
+/* 一束从上方落下的光 */
+.dt-hero::after {
+  content: "";
+  position: absolute; left: 50%; top: -12%;
+  width: 46%; height: 76%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(240, 220, 154, 0.11), transparent 68%);
+  pointer-events: none;
+}
+.dt-seal {
+  position: relative;
+  display: inline-block;
+  width: 46px; height: 46px; line-height: 44px;
+  margin-bottom: 1.1rem;
+  font-size: 24px; font-weight: 700;
+  color: #f4e6c8;
+  background: linear-gradient(160deg, #a8231f, #6f1310);
+  border: 1px solid #c0392b;
+  border-radius: 2px;
+  box-shadow: 0 0 22px rgba(168, 35, 31, 0.5), inset 0 0 12px rgba(0, 0, 0, 0.45);
+  letter-spacing: 0;
+}
+.dt-hero h1 {
+  position: relative;
+  margin: 0 0 0.85rem;
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: #f6ecd6;
+  text-shadow: 0 0 34px rgba(214, 180, 92, 0.3), 0 2px 1px #000;
+}
+.dt-hero h1 em {
+  font-style: normal;
+  color: var(--zhu3);
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 30px rgba(192, 57, 43, 0.55);
+}
+.dt-sub {
+  position: relative;
+  margin: 0 0 1.5rem;
+  font-size: 0.92rem;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+}
+.dt-line {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding-top: 0.95rem;
+  font-size: 0.94rem;
+  letter-spacing: 0.2em;
+  color: var(--gold2);
+  border-top: 1px solid rgba(214, 180, 92, 0.26);
+}
+.dt-line::before, .dt-line::after {
+  content: "·";
+  color: var(--zhu2);
+  margin: 0 0.7em;
+}
+
+/* ══════════ 视频 ══════════ */
+.dt-video {
+  position: relative;
+  padding: 2.1rem 1.4rem 2.3rem;
+  background: linear-gradient(180deg, var(--ink0), #100d0a);
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+.dt-video video {
+  width: 100%;
+  max-width: 760px;
+  display: block;
+  margin: 0 auto;
+  background: #000;
+  border: 1px solid var(--line2);
+  border-radius: 3px;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.7);
+}
+.dt-vcap {
+  margin: 0.95rem auto 0;
+  max-width: 640px;
+  font-size: 0.85rem;
+  color: var(--txt3);
+  letter-spacing: 0.06em;
+}
+.dt-vcap b { color: var(--gold2); font-weight: 400; }
+
+/* ══════════ 页签 ══════════ */
+.dt-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  background: var(--ink2);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 8;
+}
+.dt-tab {
+  flex: 0 1 auto;
+  min-width: 72px;
+  padding: 0.95rem 1.15rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--txt3);
+  font-family: inherit;
+  font-size: 1.02rem;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.dt-tab:hover { color: var(--gold2); background: rgba(214, 180, 92, 0.045); }
+.dt-tab.on {
+  color: var(--gold3);
+  border-bottom-color: var(--zhu2);
+  background: linear-gradient(180deg, transparent, rgba(143, 29, 23, 0.2));
+}
+
+/* ══════════ 面板 ══════════ */
+.dt-body { padding: 2.2rem 1.6rem 2.6rem; background: var(--ink0); }
+.dt-panel { display: none; }
+.dt-panel.on { display: block; animation: dtIn .34s cubic-bezier(.22,.61,.36,1); }
+@keyframes dtIn { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
+
+.dt h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 2.3rem 0 1.1rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--gold2);
+}
+.dt h2:first-child { margin-top: 0.2rem; }
+.dt h2::before {
+  content: "";
+  width: 4px; height: 1.05em;
+  background: linear-gradient(180deg, var(--zhu2), var(--zhu));
+  border-radius: 1px;
+  flex: 0 0 auto;
+}
+.dt h2::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(214, 180, 92, 0.28), transparent);
+}
+.dt h3 {
+  margin: 1.5rem 0 0.65rem;
+  font-size: 0.98rem;
+  letter-spacing: 0.12em;
+  color: #ddcfae;
+  font-weight: 600;
+}
+.dt p { margin: 0.7rem 0; }
+.dt strong { color: var(--gold3); font-weight: 600; }
+.dt em { color: var(--zhu3); font-style: normal; }
+.dt ul, .dt ol { margin: 0.7rem 0; padding-left: 1.5rem; }
+.dt li { margin: 0.42rem 0; color: var(--txt2); }
+.dt li::marker { color: var(--zhu2); }
+.dt li strong { color: var(--gold3); }
+.dt a { color: var(--gold2); text-decoration: none; border-bottom: 1px solid rgba(214,180,92,.3); }
+.dt hr { border: none; border-top: 1px solid var(--line); margin: 1.9rem 0; }
+
+.dt-lead {
+  margin: 0 0 1.7rem;
+  padding: 0.1rem 0 0.1rem 1.05rem;
+  border-left: 2px solid rgba(143, 29, 23, 0.7);
+  color: var(--txt2);
+  font-size: 0.98rem;
+}
+.dt-quote {
+  margin: 1.4rem 0;
+  padding: 1rem 1.2rem;
+  background: linear-gradient(180deg, rgba(143,29,23,.09), rgba(143,29,23,.03));
+  border: 1px solid rgba(143, 29, 23, 0.3);
+  border-left: 3px solid var(--zhu);
+  border-radius: 2px;
+  color: #dfd2b8;
+  font-size: 0.96rem;
+}
+.dt-quote b { color: var(--gold3); font-weight: 600; }
+.dt-warn {
+  margin: 1.2rem 0;
+  padding: 0.85rem 1.05rem;
+  background: rgba(143, 29, 23, 0.11);
+  border: 1px solid rgba(143, 29, 23, 0.38);
+  border-radius: 2px;
+  font-size: 0.93rem;
+  color: #e4d8c0;
+}
+.dt-warn::before { content: "※ "; color: var(--zhu3); }
+
+/* ══════════ 表格 ══════════ */
+.dt-tbl { width: 100%; border-collapse: collapse; margin: 1.15rem 0; font-size: 0.91rem; }
+.dt-tbl th {
+  background: rgba(214, 180, 92, 0.07);
+  color: var(--gold2);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.56rem 0.75rem;
+  border-bottom: 1px solid var(--line2);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.dt-tbl td {
+  padding: 0.56rem 0.75rem;
+  border-bottom: 1px solid rgba(56, 48, 36, 0.65);
+  color: var(--txt2);
+  vertical-align: top;
+}
+.dt-tbl tr:hover td { background: rgba(214, 180, 92, 0.035); color: var(--txt); }
+.dt-tbl td strong { color: var(--gold3); }
+
+.dt-pre {
+  margin: 1.15rem 0;
+  padding: 0.95rem 1.1rem;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--txt2);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+/* ══════════ 幕（时间线） ══════════ */
+.dt-acts { position: relative; margin: 1.2rem 0 0; padding-left: 1.7rem; }
+.dt-acts::before {
+  content: "";
+  position: absolute; left: 6px; top: 10px; bottom: 10px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--zhu2), rgba(214, 180, 92, 0.3) 30%, transparent);
+}
+.dt-act { position: relative; margin-bottom: 0.5rem; }
+.dt-act::before {
+  content: "";
+  position: absolute; left: -1.7rem; top: 0.82rem;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--ink0);
+  border: 2px solid var(--zhu);
+  transition: background .18s, border-color .18s;
+}
+.dt-act.open::before { background: var(--gold2); border-color: var(--gold3); }
+.dt-act-h {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.66rem 0.9rem;
+  background: var(--ink2);
+  border: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  border-radius: 2px;
+  color: var(--txt);
+  font-family: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .18s, background .18s;
+}
+.dt-act-h:hover { border-left-color: var(--zhu2); background: var(--ink3); }
+.dt-act.open .dt-act-h { border-left-color: var(--gold2); background: var(--ink3); }
+.dt-act-t { flex: 0 0 auto; font-size: 0.83rem; color: var(--gold2); letter-spacing: 0.04em; }
+.dt-act-n { font-weight: 600; }
+.dt-act-w { margin-left: auto; font-size: 0.79rem; color: var(--txt3); white-space: nowrap; }
+.dt-act-b {
+  display: none;
+  margin: 0.22rem 0 0.6rem;
+  padding: 0.9rem 1rem 1rem;
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid var(--line);
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+  font-size: 0.9rem;
+  color: var(--txt2);
+}
+.dt-act.open .dt-act-b { display: block; }
+.dt-act-b p { margin: 0.5rem 0; }
+.dt-act-b .k { color: var(--gold2); }
+.dt-act-b .c { color: var(--txt3); font-size: 0.85rem; }
+
+/* ══════════ 人（头像档） ══════════ */
+.dt-camp {
+  margin: 1.5rem 0 0.6rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.36em;
+  color: var(--zhu3);
+}
+.dt-camp::before { content: "— "; color: var(--txt3); }
+.dt-camp::after { content: " —"; color: var(--txt3); }
+.dt-folk {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(126px, 1fr));
+  gap: 0.85rem;
+  margin: 1.15rem 0 0.4rem;
+}
+.dt-card {
+  position: relative;
+  background: var(--ink2);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  font-family: inherit;
+  text-align: left;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.dt-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
+}
+.dt-card.on {
+  border-color: var(--zhu2);
+  box-shadow: 0 0 0 1px var(--zhu), 0 10px 26px rgba(143, 29, 23, 0.4);
+}
+.dt-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  filter: saturate(0.82) contrast(1.04) brightness(0.94);
+  transition: filter .25s;
+}
+.dt-card:hover img, .dt-card.on img { filter: saturate(1) contrast(1.06) brightness(1.02); }
+.dt-card .nm {
+  padding: 0.42rem 0.5rem 0.1rem;
+  font-size: 0.95rem;
+  color: #eadfc6;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+.dt-card .ds {
+  padding: 0 0.5rem 0.55rem;
+  font-size: 0.72rem;
+  color: var(--txt3);
+  text-align: center;
+  line-height: 1.45;
+  min-height: 2.1em;
+}
+.dt-card .tag {
+  position: absolute; top: 6px; left: 6px;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: #f2e2c4;
+  background: rgba(11, 10, 8, 0.72);
+  border: 1px solid rgba(214, 180, 92, 0.35);
+  border-radius: 1px;
+  padding: 1px 6px;
+}
+
+/* ══════════ 开局表单 ══════════ */
+.dt-form { margin: 1.2rem 0 1.6rem; }
+.dt-f { margin: 0 0 0.9rem; }
+.dt-f label {
+  display: block;
+  margin-bottom: 0.34rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: var(--gold2);
+}
+.dt-in {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.46);
+  border: 1px solid rgba(214, 180, 92, 0.24);
+  border-radius: 2px;
+  color: var(--txt);
+  font-family: inherit;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  resize: vertical;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+}
+.dt-in:focus {
+  outline: none;
+  border-color: var(--gold2);
+  background: rgba(0, 0, 0, 0.62);
+  box-shadow: 0 0 0 2px rgba(214, 180, 92, 0.12);
+}
+.dt-in::placeholder { color: #5d5445; }
+textarea.dt-in { min-height: 62px; }
+
+.dt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.5rem;
+  background: linear-gradient(180deg, #9c2119, #6f1310);
+  border: 1px solid #c0392b;
+  border-radius: 2px;
+  color: #fbeada;
+  font-family: inherit;
+  font-size: 0.96rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: filter .16s, transform .1s, box-shadow .16s;
+}
+.dt-btn:hover { filter: brightness(1.15); box-shadow: 0 0 22px rgba(143, 29, 23, 0.5); }
+.dt-btn:active { transform: translateY(1px); }
+.dt-btn.ghost {
+  background: transparent;
+  border-color: rgba(214, 180, 92, 0.42);
+  color: var(--gold2);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  padding: 0.5rem 1rem;
+  font-size: 0.87rem;
+}
+.dt-btn.ghost:hover { background: rgba(214, 180, 92, 0.1); box-shadow: none; }
+
+.dt-fb {
+  display: none;
+  margin-top: 0.8rem;
+  padding: 0.6rem 0.95rem;
+  font-size: 0.88rem;
+  color: var(--gold3);
+  background: rgba(214, 180, 92, 0.09);
+  border: 1px solid rgba(214, 180, 92, 0.32);
+  border-radius: 2px;
+}
+.dt-fb.show { display: block; }
+
+.dt-row { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
+
+/* ══════════ 页脚 ══════════ */
+.dt-foot {
+  margin-top: 2.6rem;
+  padding: 1.5rem 1rem 1.9rem;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--ink0), #0a0908);
+  color: var(--txt3);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  line-height: 2;
+}
+.dt-foot q { color: var(--gold); font-style: normal; quotes: none; }
+
+@media (max-width: 620px) {
+  .dt { font-size: 15px; }
+  .dt-hero { padding: 3rem 1rem 2.4rem; }
+  .dt-hero h1 { font-size: 1.75rem; letter-spacing: 0.12em; }
+  .dt-sub { letter-spacing: 0.3em; font-size: 0.84rem; }
+  .dt-body { padding: 1.5rem 0.95rem 1.9rem; }
+  .dt-tab { min-width: 56px; padding: 0.8rem 0.55rem; font-size: 0.94rem; letter-spacing: 0.16em; text-indent: 0.16em; }
+  .dt-folk { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 0.65rem; }
+  .dt-act-w { display: none; }
+  .dt-tbl { font-size: 0.84rem; }
+  .dt-tbl th, .dt-tbl td { padding: 0.45rem 0.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="dt">
+
+  <header class="dt-hero">
+    <div class="dt-seal">嘉</div>
+    <h1>大明王朝<em>1566</em></h1>
+    <p class="dt-sub">嘉靖三十九年 —— 四十五年</p>
+    <p class="dt-line">万稳万当，不如一默</p>
+  </header>
+
+  <section class="dt-video">
+    <video controls preload="metadata" playsinline
+           src="https://filomenosnyder-stack.github.io/datang-1566/video/intro.mp4"></video>
+    <p class="dt-vcap"><b>当他双肩扛起大明天下之时</b> —— 一个人站在那张网里，网上的每一根线，都是别人的利害</p>
+  </section>
+
+  <nav class="dt-nav" id="dtNav">
+    <button class="dt-tab on" data-go="p-xu">序</button>
+    <button class="dt-tab" data-go="p-mu">幕</button>
+    <button class="dt-tab" data-go="p-ren">人</button>
+    <button class="dt-tab" data-go="p-shi">势</button>
+    <button class="dt-tab" data-go="p-gui">规</button>
+    <button class="dt-tab" data-go="p-kai">开局</button>
+  </nav>
+
+  <main class="dt-body">
+
+    <!-- ═══════ 序 ═══════ -->
+    <section class="dt-panel on" id="p-xu">
+      <p class="dt-lead">
+        皇帝二十多年不上朝。他住在西苑，穿道袍、戴香冠，日夜打坐炼丹写青词——
+        <strong>可这王朝的军、政、财、人，他攥在手里一分不放。</strong>
+      </p>
+
+      <p>国库是空的。岁入不够岁出，宫里修宫观、炼丹药、内廷开销，全从国库出；各级官员层层截留。
+      <strong>太仓存银不够发一个月俸禄。</strong></p>
+
+      <p>天下是烂的。土地兼并到了极点，千百万农民一夜之间失去田，赋税却还压在他们头上。
+      东南有倭寇，北边有鞑靼，内地有灾荒。</p>
+
+      <p><strong>这张网里没有谁是干净的。</strong>严嵩替皇上捞钱，徐阶等着倒严，司礼监替皇上当家。
+      三方谁也吃不掉谁，就这么耗着。</p>
+
+      <h2>三条铁律</h2>
+      <div class="dt-quote">
+        <p><b>一 · 皇上只要钱和一统。</b>他明知道严党层层盘剥，也还要靠严党去敛财。<strong>他什么都明白，他就是要这样。</strong></p>
+        <p><b>二 · 一切最后都是钱的问题。</b>打仗要钱，赈灾要钱，修宫观要钱。钱不够就往下面刮；<strong>下面刮不动了，就往商人身上刮。</strong></p>
+        <p><b>三 · 没有谁是干净的。</b>严嵩护过他手下的人，徐阶吞过更多的田。<strong>你要找的不是好人，是能合作的人。</strong></p>
+      </div>
+
+      <h2>这个王朝的六句话</h2>
+      <ol>
+        <li><strong>官场无朋友，朝事无是非，只有「利害」二字。</strong>理解一个人，先看他怕失去什么。</li>
+        <li><strong>万稳万当，不如一默。</strong>你不说出来便是那句话的主人；你说了出来，便是那句话的奴隶。</li>
+        <li><strong>上下挥霍无度，便掠之于民；民变在即，便掠之于商。</strong></li>
+        <li><strong>你中有我，我中有你，天下事坏就坏在这里。</strong>立场和良心是两回事。</li>
+        <li><strong>做事情，不问能不能做成，要问应不应该做。</strong>——这王朝里只有海瑞一个人这么想。</li>
+        <li><strong>任何一句话都可信，也不可全信。</strong>看到的每条信息都要先问：谁报的？他为什么这么报？</li>
+      </ol>
+
+      <div class="dt-warn">
+        这是《大明王朝1566》的世界，不是《明史》。剧中虚构的情节——改稻为桑、周云逸、齐大柱、井上十四郎——<strong>在这里都是真的</strong>。
+        史实的框架不动，<strong>但你是可以改的。</strong>
+      </div>
+    </section>
+
+    <!-- ═══════ 幕 ═══════ -->
+    <section class="dt-panel" id="p-mu">
+      <p class="dt-lead">
+        全剧三十三个时间点，从嘉靖三十九年腊月到嘉靖四十五年十二月。
+        <strong>点开任意一幕看详情</strong>，选一幕作为你的开场，或者自己写一个年月。
+      </p>
+      <p style="color:var(--txt3);font-size:.86rem;">
+        ※ 这些不是自动播放的剧本。你不去碰，事情也按自己的路子走，只是走得慢；你碰了，就要真的变。
+      </p>
+      <div class="dt-acts" id="dtActs"></div>
+      <div class="dt-row" style="margin-top:1.4rem;">
+        <button class="dt-btn ghost" id="dtCopyActs">复制时间点清单</button>
+        <span class="dt-fb" id="dtFb2"></span>
+      </div>
+    </section>
+
+    <!-- ═══════ 人 ═══════ -->
+    <section class="dt-panel" id="p-ren">
+      <p class="dt-lead">
+        <strong>这个王朝里，谁都可以演。</strong>位置决定你能做什么，也决定你能知道什么。
+        点一个人物，看他的档，<strong>或者直接点「用他开局」把表填好</strong>。
+      </p>
+      <div id="dtFolk"></div>
+      <div class="dt-row" style="margin-top:1.6rem;">
+        <button class="dt-btn ghost" id="dtRand">随便给我一个</button>
+        <span class="dt-fb" id="dtFb3"></span>
+      </div>
+
+      <h2>位置决定他能看见什么</h2>
+      <table class="dt-tbl">
+        <thead><tr><th>你演谁</th><th>你看得见</th><th>你看不见</th></tr></thead>
+        <tbody>
+          <tr><td><strong>皇上</strong></td><td>朝局：谁在动、谁在等、钱在哪</td><td>县里的事。臣子报什么你才知道什么</td></tr>
+          <tr><td><strong>阁臣 / 首辅</strong></td><td>奏章、人事、各方的底牌</td><td>地方上的真账目</td></tr>
+          <tr><td><strong>太监</strong></td><td>宫里的动静、皇上的一句话</td><td>你没有名分，什么都没有保障</td></tr>
+          <tr><td><strong>总督 / 巡抚</strong></td><td>一省的钱粮、军情、地方官的心思</td><td>京里此刻在议什么</td></tr>
+          <tr><td><strong>知县</strong></td><td>县里每一户的田、每一张嘴</td><td>京里的大人物对你只是几个名字</td></tr>
+          <tr><td><strong>商人</strong></td><td>货、账、谁欠谁——最先知道要出事</td><td>朝堂上谁在保你、谁在算计你</td></tr>
+          <tr><td><strong>百姓</strong></td><td>只有一件事：今天有没有饭吃</td><td>其余全部</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════ 势 ═══════ -->
+    <section class="dt-panel" id="p-shi">
+      <p class="dt-lead">三股势力在这张桌子上耗了二十年。<strong>谁也吃不掉谁。</strong></p>
+
+      <h2>严党 · 替皇上捞钱的那只手</h2>
+      <table class="dt-tbl">
+        <tbody>
+          <tr><td><strong>严嵩</strong>　首辅，八十岁</td><td>数十年专为皇上写青词玄文，"代天执笔"。<strong>他不是奸臣，是皇上用钝了的一把刀</strong></td></tr>
+          <tr><td><strong>严世蕃</strong>　小阁老</td><td>独眼，两京一十三省一手抓。<em>"大明朝两京一十三省是在我的肩上担着，天下苍生这几个字，还轮不到你来说！"</em></td></tr>
+          <tr><td><strong>党羽</strong></td><td>郑泌昌、何茂才、鄢懋卿、罗龙文……遍布六部与地方州府</td></tr>
+        </tbody>
+      </table>
+
+      <h2>清流 · 等着倒严的那群人</h2>
+      <table class="dt-tbl">
+        <tbody>
+          <tr><td><strong>徐阶</strong>　次辅</td><td>能忍，忍了二十年。<strong>徐家在江南置的田产，比严家只多不少</strong></td></tr>
+          <tr><td><strong>高拱 · 张居正</strong></td><td>高拱直、傲，藏不住话。张居正三十七岁，<strong>眼光最远，也最能等</strong></td></tr>
+          <tr><td><strong>裕王 · 李妃</strong></td><td>皇位继承人。李妃见识过人，徐阶高拱张居正都敬她三分。<strong>他们俩的分量，全在"将来"两个字上</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="dt-warn">清流不是圣人。他们要倒严，<strong>但严党倒了之后，徐家就是新的严家。</strong></div>
+
+      <h2>司礼监 · 替皇上当家的太监</h2>
+      <table class="dt-tbl">
+        <tbody>
+          <tr><td><strong>吕芳</strong>　掌印</td><td>皇上的"贴身保姆"。从不对皇上撒谎，也不许干儿子们撒谎。<strong>三思：思危、思退、思变</strong></td></tr>
+          <tr><td><strong>黄锦 · 陈洪</strong></td><td>黄锦是笨人、直人。<strong>皇上说：真靠得住的就两种人，一种笨人，一种直人。</strong>陈洪想往上爬，以为自己在爬，不知道自己是刀</td></tr>
+          <tr><td><strong>杨金水 · 冯保</strong></td><td>杨金水手里过的是丝绸和银子。冯保打死了周云逸，被吕芳"发配"到裕王府——<strong>其实是救了他</strong></td></tr>
+        </tbody>
+      </table>
+
+      <h2>地方与商</h2>
+      <table class="dt-tbl">
+        <tbody>
+          <tr><td><strong>胡宗宪</strong>　浙直总督</td><td>严嵩的学生。<strong>剧里给他的定位是"媳妇"</strong>：上面有公婆要孝顺，中间有丈夫要顾着，底下有儿女要操劳，两头不讨好</td></tr>
+          <tr><td><strong>赵贞吉</strong>　浙江巡抚</td><td>徐阶的学生。清流，但不干净。<em>"苦一苦百姓，骂名我来担。"</em>　海瑞的评价：<strong>郑泌昌贪财，赵贞吉贪名</strong></td></tr>
+          <tr><td><strong>海瑞</strong>　淳安知县</td><td>天下第一直人。不跪、不迎、不按规矩来。<strong>别人的暗示、眼色、人情，他全当不存在</strong></td></tr>
+          <tr><td><strong>沈一石</strong>　丝绸巨商</td><td>织造局的白手套。<strong>这张网里最没有退路的人。</strong>作坊 25 座、织机 3000 架，可一多半要去补国库亏空</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════ 规 ═══════ -->
+    <section class="dt-panel" id="p-gui">
+      <h2>奏疏怎么走</h2>
+      <div class="dt-pre">地方 / 部院 上疏
+    ↓
+通政司 收
+    ↓
+内阁 票拟（首辅拟好意见，贴票在奏章上）
+    ↓
+司礼监 批红（按皇上意思朱批）
+    ↓
+六科 抄发
+    ↓
+执行</div>
+      <p><strong>两处能卡死任何人：</strong>票拟在内阁，批红在司礼监。绕过这两道只有一条路——<strong>直接递到皇上手里。</strong></p>
+      <p style="color:var(--txt3);font-size:.88rem;">
+        皇上还有一招叫"留中不发"：把奏章压下来。以及"不拆封就烧"——嘉靖烧过海瑞的急递，严嵩和徐阶都敏锐到背后的深意。
+      </p>
+
+      <h2>钱（这张卡的底层）</h2>
+      <table class="dt-tbl">
+        <thead><tr><th>项</th><th>数</th></tr></thead>
+        <tbody>
+          <tr><td>浙江官场二十年贪墨沈一石</td><td><strong>七八百万两白银</strong>（一百万匹丝绸）</td></tr>
+          <tr><td>抄严党家</td><td><strong>黄金 37 万两、白银 640 万两</strong>，古货珍玩折价近 300 万两</td></tr>
+          <tr><td>└ 给兵部</td><td>360 万两（闽广抗倭 160 万 + 蓟辽防务 200 万）</td></tr>
+          <tr><td>朝廷卖与西洋所需丝绸</td><td><strong>50 万匹</strong>（沈一石库存只够织 1 万余匹）</td></tr>
+          <tr><td>京官欠俸（嘉靖四十四年底）</td><td><strong>超过全年俸禄的一半</strong></td></tr>
+          <tr><td>过年每个官员发</td><td><strong>两斗米、两升胡椒、十吊铜钱</strong></td></tr>
+          <tr><td>鄢懋卿买一个戏班子</td><td>二十万两</td></tr>
+        </tbody>
+      </table>
+
+      <h3>这个王朝的钱逻辑</h3>
+      <ol>
+        <li>国库空了 → 皇上要钱</li>
+        <li>严党去弄钱 → 一次一次往下面刮</li>
+        <li>刮到百姓 → 民变在即</li>
+        <li>就掠之于商 → <strong>沈一石被剥到最后一把火烧掉</strong></li>
+        <li>抄了严党 → 补了一阵</li>
+        <li>但宫观还要修、仗还要打、百官还要发俸禄 → 又空了</li>
+      </ol>
+      <div class="dt-warn"><strong>倒严不是终点。</strong>倒了严，国库还是空的，灾还是有的，官还是发不出俸禄的。——只是换了一批人来发愁。</div>
+
+      <h2>他会撞上的那些墙</h2>
+      <table class="dt-tbl">
+        <thead><tr><th>难处</th><th>具体是什么</th></tr></thead>
+        <tbody>
+          <tr><td><strong>筹钱</strong></td><td>报灾免赋、追赃、加派、借、让商人出血——五条路，每条都要有人在链条末端出血</td></tr>
+          <tr><td><strong>消息</strong></td><td>邸报是已经定了的事；公文会被改；私信有立场。杭州到北京，八百里加急要几天，寻常公文半个多月</td></tr>
+          <tr><td><strong>上疏</strong></td><td>上司压、通政司挡、内阁票拟、司礼监留中。你有话要说，得先过四道关</td></tr>
+          <tr><td><strong>见皇上</strong></td><td>三道门槛：有资格、有人递话、皇上得想见你。一个知县一辈子见不到</td></tr>
+          <tr><td><strong>办事</strong></td><td>一道申文走到京城要一个月。拖不是懒，是一种态度——拖到你走人</td></tr>
+          <tr><td><strong>查案</strong></td><td>证据会烧、证人会死、上司不配合、上面不许你审到那一层</td></tr>
+          <tr><td><strong>救人</strong></td><td>要有名目、要有人垫、常常要用一件更大的事去换</td></tr>
+          <tr><td><strong>保命</strong></td><td>沉默、装疯、退、送把柄、主动受审。死的人大多不是因为贪或坏，是因为没用了</td></tr>
+        </tbody>
+      </table>
+
+      <h2>官制 · 服色 · 称呼</h2>
+      <p><strong>中枢：</strong>内阁（票拟）· 六部 · 都察院（弹劾）· 司礼监（批红）</p>
+      <p><strong>地方：</strong>总督 → 巡抚 → 布政使/按察使 → 知府 → 知县</p>
+      <p><strong>服色：</strong>
+        <span style="color:#a06bc4">紫</span>（三品以上）·
+        <span style="color:#c96b6b">绯</span>（四五品）·
+        <span style="color:#6fa86f">绿</span>（六七品）·
+        <span style="color:#6f8ba8">青</span>（八九品）　｜　文官绣禽，武官绣兽</p>
+      <p style="color:var(--txt3);font-size:.88rem;">"披上了这身皮，我们哪一个不是衣冠禽兽。"</p>
+
+      <h2>处决的规矩</h2>
+      <table class="dt-tbl">
+        <tbody>
+          <tr><td><strong>决不待时</strong></td><td>斩立决 / 绞立决——朱笔一勾，立刻处死</td></tr>
+          <tr><td><strong>秋决</strong></td><td>斩监候 / 绞监候——立秋这一天处死</td></tr>
+        </tbody>
+      </table>
+      <p>时辰定在<strong>午时三刻</strong>：秋风已起肃杀，日光依然蒸烁，极阳转阴之际人命归于天谴。</p>
+      <p><strong>海瑞在淳安，就是利用"错过午时三刻"的手段，救了齐大柱。</strong></p>
+    </section>
+
+    <!-- ═══════ 开局 ═══════ -->
+    <section class="dt-panel" id="p-kai">
+      <p class="dt-lead">
+        <strong>在「人」那一页点一个人物，这里会自动填好。</strong>也可以自己写。
+        填完点复制，粘到对话框里就能开。
+      </p>
+
+      <div class="dt-form">
+        <div class="dt-f">
+          <label for="f-time">时间点</label>
+          <input class="dt-in" id="f-time" placeholder="例：嘉靖四十年正月十五 ／ 序幕·周云逸杖毙">
+        </div>
+        <div class="dt-f">
+          <label for="f-who">我是谁（姓名 + 身份）</label>
+          <input class="dt-in" id="f-who" placeholder="例：海瑞，新任淳安知县">
+        </div>
+        <div class="dt-f">
+          <label for="f-age">今年多大</label>
+          <input class="dt-in" id="f-age" placeholder="例：四十六">
+        </div>
+        <div class="dt-f">
+          <label for="f-where">我此刻在哪</label>
+          <input class="dt-in" id="f-where" placeholder="例：杭州 巡抚衙门 门房">
+        </div>
+        <div class="dt-f">
+          <label for="f-doing">我在做什么</label>
+          <textarea class="dt-in" id="f-doing" placeholder="例：刚下船，官服还没换，手里攥着邸报"></textarea>
+        </div>
+        <div class="dt-f">
+          <label for="f-know">我知道多少（这些消息是从哪知道的）</label>
+          <textarea class="dt-in" id="f-know" placeholder="例：只知道浙江受灾、朝廷要改稻为桑；堤是谁掘的，是谭纶信里提了一句"></textarea>
+        </div>
+        <div class="dt-f">
+          <label for="f-want">我想要什么</label>
+          <textarea class="dt-in" id="f-want" placeholder="例：把这件案子审到底，不管牵到谁"></textarea>
+        </div>
+        <div class="dt-f">
+          <label for="f-fear">我怕失去什么（这一栏最要紧）</label>
+          <textarea class="dt-in" id="f-fear" placeholder="例：母亲和妻儿的命；或者：这个位子"></textarea>
+        </div>
+      </div>
+
+      <div class="dt-row">
+        <button class="dt-btn" id="dtCopy">复制开局</button>
+        <button class="dt-btn ghost" id="dtClear">清空</button>
+        <span class="dt-fb" id="dtFb"></span>
+      </div>
+
+      <h2>复制出来长这样</h2>
+      <div class="dt-pre" id="dtOut">（填上面的格子，这里会实时显示）</div>
+
+      <div class="dt-warn" style="margin-top:1.5rem;">
+        <strong>「我怕失去什么」这一栏最要紧。</strong>这个王朝里，人是被"怕"推着走的。
+        你把这一栏填清楚，后面所有的选择就都有根了。
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="dt-foot">
+    大明王朝1566 · 谁都可以演<br>
+    <q>黄河水浊，长江水清。不能只因水清而偏用，也不能只因水浊而偏废。</q>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var BASE = "https://filomenosnyder-stack.github.io/datang-1566/";
+
+  /* ═══════ 页签 ═══════ */
+  var nav = document.getElementById('dtNav');
+  if (nav) {
+    nav.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.dt-tab') : null;
+      if (!b) return;
+      var go = b.getAttribute('data-go');
+      var tabs = nav.querySelectorAll('.dt-tab');
+      for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+      b.classList.add('on');
+      var ps = document.querySelectorAll('.dt-panel');
+      for (var j = 0; j < ps.length; j++) {
+        if (ps[j].id === go) ps[j].classList.add('on');
+        else ps[j].classList.remove('on');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  function gotoTab(id) {
+    var t = document.querySelector('.dt-tab[data-go="' + id + '"]');
+    if (t) t.click();
+  }
+
+  /* ═══════ 幕（33 个时间点） ═══════ */
+  var ACTS = [
+    ["39年腊月廿九", "序 · 周云逸杖毙", "午门外", "周云逸 冯保 吕芳", "一冬无雪。钦天监周云逸上疏说朝廷开支无度、上下贪墨、天怒人怨——杖二十，打死在午门外。同月裕王得了第一个儿子。"],
+    ["40年正月十五", "御前财政会议", "西苑玉熙宫", "严嵩 徐阶 高拱 张居正 吕芳", "一年一度的算账。户部报亏空，严党与清流当着皇上的面吵。吵出四个字：改稻为桑。"],
+    ["40年二三月", "踏青苗", "淳安 建德", "马宁远 郑泌昌 何茂才 齐大柱", "断水、踏苗、毁田，逼百姓改桑。戚继光奉胡宗宪之命撤军。齐大柱率众围住总督衙门。"],
+    ["40年四月", "毁堤淹田", "新安江大堤", "严世蕃 胡宗宪 戚继光", "严世蕃密令掘开新安江九县闸门。胡宗宪率兵抗洪，最后分洪——保七县，淹淳安全县、建德半县。"],
+    ["40年四月末", "先斩后奏", "杭州 总督衙门", "胡宗宪 马宁远", "推四个人顶罪。胡宗宪秘密提审马宁远拿到供状，先斩后奏，砍了马宁远、常伯熙、张知良、李玄。"],
+    ["40年五月", "杨金水进京", "北京 西苑", "杨金水 吕芳 李妃 张居正", "三方各自派人受问。结果是胡宗宪辞去浙江巡抚，只任浙直总督。李妃劝住张居正：大明朝不是严家的大明朝。"],
+    ["40年五月", "两个人去浙江", "北京 / 浙江", "高翰文 海瑞 王用汲 胡宗宪", "严党派高翰文任杭州知府，清流派海瑞任淳安知县、王用汲任建德知县。胡宗宪在驿站跟高翰文说了实话。"],
+    ["40年六月", "巡抚大堂", "杭州 巡抚衙门", "高翰文 海瑞 芸娘 沈一石", "高翰文看完议案，发现通篇没提大户压价、百姓死活，提出重议。海瑞、王用汲激烈反对，议案没通过。当晚美人计启动。"],
+    ["40年六月", "通倭冤案", "淳安 杭州", "海瑞 井上十四郎 蒋千户", "何茂才用通倭罪陷害灾民，要海瑞亲手正法。海瑞以无立案卷、无口供为由按大明律拒绝行刑，两路急报要三司会审。"],
+    ["40年六月", "玉熙宫震怒", "北京 西苑", "嘉靖 严世蕃 朱七", "杨金水八百里加急送进宫。嘉靖急召严嵩查问，才发现严党已尾大不掉。怒斥严嵩父子，派锦衣卫下浙江。"],
+    ["40年七八月", "沈一石把粮赈了", "浙江", "沈一石 杨金水 朱七", "沈一石打着织造局旗号买田，却把粮赈了灾民。杨金水明白这是往皇上头上泼脏水。朱七暗访查明齐大柱通倭实属冤枉。"],
+    ["40年八月", "沈一石自焚", "杭州 沈府", "沈一石 芸娘", "关门、点火，弹了一曲《广陵散》。四箱行贿账册落到郑何手里。作坊25座、织机3000架，浙江首富早已被剥得所剩无几。"],
+    ["40年八月末", "四箱账册进京", "杭州 / 北京", "杨金水 吕芳 高翰文", "杨金水另有四箱账册，原封不动送往京城交给吕芳。郑何密谋移罪高翰文。高翰文被槛送京师，芸娘陪他一起进京。"],
+    ["40年九月", "账册摆在严嵩面前", "北京 玉熙宫", "嘉靖 胡宗宪 严嵩", "太监算出浙江官场二十年贪墨七八百万两。嘉靖召见胡宗宪，又命他把四箱账册连夜送进严府——这是只有嘉靖能做出来的羞辱。"],
+    ["40年九月", "赵贞吉到浙江", "杭州", "赵贞吉 郑泌昌 何茂才", "新巡抚与锦衣卫到离杭州三十里的驿站。郑何正把沈一石的作坊织机贱价卖给徽商，打算将功抵过。"],
+    ["40年九月末", "提审郑何", "杭州 臬司大牢", "海瑞 杨金水 赵贞吉", "海瑞直逼毁堤淹田、私放倭首两件重案。杨金水在隔壁暗室大惊，让锦衣卫赶紧制止。赵贞吉使的是「打鬼借钟馗」。"],
+    ["40年九月末", "杨金水疯了", "杭州", "杨金水 赵贞吉 海瑞", "被逼无奈，一夜之间疯了。赵贞吉奉旨抄沈一石家产却签字放给徽商，还反叱海瑞：岸上观船翻，以博直名，大忠似伪。"],
+    ["40年十月", "供词", "杭州 / 北京", "海瑞 吕芳 陈洪 赵贞吉", "海瑞坚持供状一字不改上报。供状直指「内阁也是替宫里当差」。吕芳、严嵩、徐阶一致认为这份东西不能递上去。陈洪却把真相递给了嘉靖。"],
+    ["40年七至九月", "台州大捷", "台州沿海", "胡宗宪 戚继光 谭纶", "援军未到、军需不继，胡宗宪亲督戚家军，「身冒炮矢，意在殉国」。第九次台州大战清剿了为患十年的倭寇残部。打赢了，但没钱。"],
+    ["40年秋", "陈洪掌印", "北京 宫中", "杨金水 陈洪 吕芳 黄锦", "杨金水被押进京受审，疯魔般交待出尚衣监、巾帽局、吕芳、郑何和严嵩父子——唯独没有胡宗宪和嘉靖。吕芳被派去永陵看坟，陈洪暂署掌印。"],
+    ["40年中元", "焚供状", "北京 宫中", "嘉靖 吕芳 严嵩 徐阶", "嘉靖捧一坛四十年陈酿，正应「杯酒释兵权」。中元之时，君臣四人头戴香冠敬天修醮，当着严嵩徐阶的面，把重新封好的海瑞供状付之一炬。"],
+    ["40年秋末", "齐大柱被逮", "淳安 / 北京", "严嵩 齐大柱 鄢懋卿", "严嵩反守为攻，奏请逮拿齐大柱。两家人前一刻还在吃饭，下一刻锦衣卫到了淳安码头。鄢懋卿南巡盐税，几百万两银子一半入私囊。"],
+    ["40年腊月廿三", "血经", "北京", "裕王妃 芸娘 嘉靖", "裕王妃带世子进宫献血经，谎称张真人降世亲赠齐大柱妻子。嘉靖大喜，赦免齐大柱。严党大为恐慌，密查出血经出自高翰文和芸娘。"],
+    ["41年正月十五", "严党倒台", "北京", "张居正 严世蕃 高翰文", "严党带兵围高翰文住宅；张居正也带兵来，要送他们出京。两军对垒之际，锦衣卫奉密旨赶到，抓了严世蕃，另几路人马同时逮捕严党党羽。"],
+    ["41年五月", "严世蕃伏诛", "北京", "严嵩 高拱 徐阶", "高拱奉旨宣读弹劾奏疏，热泪盈眶，百官哭倒在地。抄没黄金37万两、白银640万两。严嵩题的那块匾挂上酱菜铺，门庭冷落。"],
+    ["41年", "吕芳去南京", "北京 / 南京", "陈洪 冯保 李妃", "冯保被逐出王府解往朝天观。嘉靖忍痛将跟了自己四十年的吕芳发配南京守陵。严党倒了，他需要一把更狠的刀。"],
+    ["41年", "海瑞进京", "北京 六必居", "海瑞 王用汲 李时珍", "海瑞调任户部主事，囊空如洗。他在六必居题十六字「产地必真，时令必合…」。李时珍见海母才知道：海瑞在兴国为百姓争水，自己的女儿掉进河里淹死了。"],
+    ["44年", "百官大闹广盈库", "北京", "李清源 海瑞 徐阶", "京官欠俸超过全年俸禄一半，过年只发两斗米、两升胡椒、十吊铜钱。李清源领着百官大闹广盈库。海瑞把母亲织的布拿到街上贩卖。"],
+    ["45年正月初五", "百官跪谏", "西苑禁门外", "嘉靖 陈洪 裕王 海瑞", "迁居新宫，百官却不愿上贺表，百十来号人举着奏疏跪在禁门外。陈洪带东厂和锦衣卫毒打百官。海瑞在大兴赈灾回家，病倒人事不省。"],
+    ["45年二月廿三", "天下第一疏", "新宫殿坪", "海瑞 赵贞吉 嘉靖", "赵贞吉匆忙间送上的「贺表」，是海瑞写好的《治安疏》——天下人不直陛下久矣、嘉靖者言家家皆净而无财用也。提刑太监冲到海宅，只见海瑞端坐，背后一具白木棺材。"],
+    ["45年五月初五", "诏狱对峙", "北镇抚司诏狱", "海瑞 嘉靖 陈洪", "嘉靖暗访诏狱，海瑞声若洪钟，将一座诏狱震得嗡嗡直响，嘉靖口吐鲜血、激怒而去。同日都察院大堂「论罪」——三法司无一堂官在场。"],
+    ["45年立秋", "天命赦免", "北京", "海瑞 黄锦 嘉靖", "刑部定海瑞绞监候。嘉靖勾决，着黄锦不许骑马坐轿、午时正步行传旨：若午时三刻旨意未能送达，便是天命赦免海瑞。"],
+    ["45年十二月", "结局", "宫中 / 裕王府", "嘉靖 裕王 海瑞", "嘉靖驾崩。临终说：黄河水浊，长江水清，不能只因水清而偏用，也不能只因水浊而偏废。海瑞闻讯大恸，尽呕出所饮食，陨绝于地。裕王继位，改元隆庆。"]
+  ];
+
+  var box = document.getElementById('dtActs');
+  if (box) {
+    ACTS.forEach(function (d) {
+      var node = document.createElement('div');
+      node.className = 'dt-act';
+      var h = document.createElement('button');
+      h.className = 'dt-act-h';
+      h.type = 'button';
+      h.innerHTML = '<span class="dt-act-t">' + d[0] + '</span>' +
+                    '<span class="dt-act-n">' + d[1] + '</span>' +
+                    '<span class="dt-act-w">' + d[2] + '</span>';
+      var b = document.createElement('div');
+      b.className = 'dt-act-b';
+      b.innerHTML = '<p>' + d[4] + '</p>' +
+                    '<p class="c">▸ 常在场的人：' + d[3] + '</p>' +
+                    '<p class="c">▸ 时间地点：' + d[0] + '　' + d[2] + '</p>' +
+                    '<p><button class="dt-btn ghost" type="button" data-act-time="' + d[0] + '　' + d[1] + '">用这一幕开场</button></p>';
+      h.addEventListener('click', function () { node.classList.toggle('open'); });
+      node.appendChild(h); node.appendChild(b); box.appendChild(node);
+    });
+    box.addEventListener('click', function (e) {
+      var b2 = e.target.closest ? e.target.closest('[data-act-time]') : null;
+      if (!b2) return;
+      var t = document.getElementById('f-time');
+      if (t) t.value = b2.getAttribute('data-act-time');
+      refresh();
+      gotoTab('p-kai');
+    });
+  }
+
+  /* ═══════ 人（20 个角色 + 头像 + 开局预设） ═══════ */
+  /* [拼音, 中文名, 阵营, 一句话, 时间, 身份, 年龄, 在哪, 在做什么, 知道多少, 想要什么, 怕失去什么] */
+  var FOLK = [
+    ["jiajing","嘉靖","宫里","二十多年不上朝，攥着权不放","嘉靖四十年正月十五","嘉靖皇帝朱厚熜","五十四","西苑 玉熙宫 帘后","听着帘外两拨人算账，手里青词才写了一半","什么都知道。浙江的账、严党的手、清流的算盘，都在你案上","钱。要钱补国库，还要这三方都别倒","对朝局的掌控——有人替你把事办了，你就危险了"],
+    ["yuwang","裕王","宫里","皇储，宫里唯一替清流说话的人","嘉靖四十年正月十五","裕王朱载垕","三十余","裕王府 书房","刚得了儿子，徐阶高拱张居正都在座，等你开口","知道国库空、严党横。但父皇怎么想的，你一点都不知道","保住储位，让这一派的人不至于一个个倒下","父皇的猜忌"],
+    ["lifei","李妃","宫里","见识过人，一手献经送严党上路","嘉靖四十年五月","裕王正妃","三十上下","裕王府 内堂","听着张居正气急要「让浙江乱了」，你准备开口劝","知道朝局的走向，也知道浙江的百姓在遭什么罪","让裕王别意气用事，也让人心里那点道理保住","裕王和世子"],
+    ["yansong","严嵩","内阁","八十岁，代天执笔二十年","嘉靖四十年四月末","内阁首辅","八十余","严府 书房","刚听严世蕃报完毁堤淹田的事，正在算怎么进宫","知道浙江的事瞒不住了，也知道皇上要问什么","保住儿子，保住这个位子","严世蕃"],
+    ["yanshifu","严世蕃","内阁","独眼，两京一十三省一手抓","嘉靖四十年正月十五","吏部工部侍郎","四十余","西苑 玉熙宫 殿外","刚跟户部吵完，手里拿着改稻为桑的条陈","什么都知道。浙江的水、京里的账、谁在背后递折子","把改稻为桑推下去，把浙江这块肉吃下来，盯住徐阶","父亲的位子，和这个家族的命"],
+    ["xujie","徐阶","内阁","能忍，忍了二十年","嘉靖四十年九月","次辅兼户部尚书","六十余","内阁值房","刚接到浙江账册进京的消息，在算这一步该怎么走","知道账册的分量，也知道倒严不能牵涉皇上","倒严。干干净净地倒，不牵祸裕王","二十年都忍下来了，别在这时候出错"],
+    ["gaogong","高拱","内阁","直、傲，藏不住话","嘉靖四十年正月十五","户部侍郎","五十余","西苑 玉熙宫","刚刚当众翻了账，还没坐下","知道国库空了，也知道严党在做什么","让皇上知道钱去哪了","话说出口就收不回，但你不后悔"],
+    ["zhangjuzheng","张居正","内阁","三十七岁，眼光最远，也最能等","嘉靖四十年五月","兵部侍郎","三十七","裕王府 议事厅","刚说完「干脆让浙江乱了」，被李妃劝住","看得到十年后的格局，也看得到眼前的死结","找到一条既能倒严、又不害百姓的路","这个王朝最后那点机会"],
+    ["lufang","吕芳","司礼监","三思：思危、思退、思变","嘉靖四十年十月","司礼监掌印太监","六十上下","西苑 精舍外廊下","捧着一沓刚批好的奏章，里面有一份是浙江来的","什么都知道。四箱账册、海瑞的供词、陈洪在做什么","让这一局过去，谁也别死","皇上的一念"],
+    ["chenhong","陈洪","司礼监","奉旨打人打得最狠","嘉靖四十年秋","司礼监秉笔太监","五十上下","宫中 值房","刚听说吕芳要去永陵看坟，正在打算怎么接这个大印","知道皇上的性子，知道谁挡在面前","往上走。坐那个掌印的位子","没有靠山。你只有皇上的一念"],
+    ["yangjinshui","杨金水","司礼监","手里过的是丝绸和银子","嘉靖四十年八月","江南织造局总管太监","四十余","杭州 织造局","沈一石的粮船到了淳安，账却对不上","知道郑何打了宫里旗号，也知道这事捅出去最先完的是自己","活下去，把这笔账洗清","这条命——你已经想好怎么装了"],
+    ["huzongxian","胡宗宪","地方","上面有公婆，底下有儿女，两头不讨好","嘉靖四十年四月","浙直总督兼浙江巡抚","四十九","新安江大堤 决口处","站在堤上，水漫过脚面。左边是九个县，右边是九县的田","知道堤是被人掘的，也知道是谁下的令。手里有马宁远的供状","保住能保的百姓，同时别让浙江乱起来","东南的军心，以及浙江这一省的人命"],
+    ["zhaozhenji","赵贞吉","地方","苦一苦百姓，骂名我来担","嘉靖四十年九月","浙江巡抚","五十余","杭州 巡抚衙门 签押房","刚到任。案上四样东西：追赃的上谕、军饷的急报、徽商的约书、海瑞的供词","知道郑何贪、知道沈一石的产业名分暧昧、知道前方在等军饷","筹出军饷、结了案子、把自己摘干净","清名。骂名可以担，但不能真被记成贪"],
+    ["hairui","海瑞","地方","天下第一直人","嘉靖四十年六月","新任淳安知县","四十六","淳安县衙 二堂","刚接下印信，案上摆着前任留下的卷宗，一份也没有通倭案的立案卷","只知道浙江被淹了、朝廷要改稻为桑。堤是谁掘的，谭纶信里提了一句，没说透","把这件案子审到底，不管牵到谁","母亲和妻儿的命"],
+    ["gaohanwen","高翰文","地方","以为道理讲通了事情就能办","嘉靖四十年五月","新任杭州知府","三十余","赴任途中的驿站","刚到驿站，浙直总督胡宗宪在等你——他有话要说","只知道浙江受灾缺粮。你写的「以改兼赈」被严党激赏，你以为那是良政","施良政，别辜负了这个差事","那点读书人的体面，和你写的那个方案"],
+    ["zhengmichang","郑泌昌","地方","严党在浙江的刀","嘉靖四十年六月","浙江布政使","五十余","杭州 巡抚衙门 二堂","刚把议案递上去，高翰文不签，海瑞当场顶回来","知道上头的密令，知道田买不成自己就要出局","入冬前把田买到手，才能交货、分钱、过关","这个位子。没了它你就是个罪人"],
+    ["shenyishi","商人","商家","这张网里最没有退路的人","嘉靖四十年八月之前","江南丝绸巨商","五十上下","杭州 织造局 库房","对着账册算那五十万匹丝绸的口子——库存生丝只够织二十天","知道国库欠你多少、严党分成多少、郑何要什么。也知道这笔账最后会落在你头上","让芸娘活下去","这条命已经不是自己的了；怕的是拖着芸娘一起"],
+    ["yunniang","芸娘","商人","手里攥着沈一石托付的血经","嘉靖四十年六月","织造局里伺候杨金水的女子","二十余","杭州 织造局 后院","郑泌昌刚差人来传话，要你去见一个新到任的知府","你知道自己是件东西，也知道他们要拿你做什么","让那个人（沈一石）活着","做人的那点余地"],
+    ["qidazhu","齐大柱","市井","被几个大人物来回利用，又活了下来","嘉靖四十年二月","淳安桑农","三十余","淳安大堤上","田里的苗刚从青转黄。村里人商量着要不要去堵衙门","只知道稻田改桑就没饭吃，官家派兵来踏苗。别的什么都不知道","今年收成能留一点，家里人不饿死","田，和一条命"],
+    ["lishizhen","李时珍","市井","不站边，只救人","嘉靖四十年九月","医者（原太医院）","五十余","苏州 胡宗宪住处","刚给胡宗宪诊完脉——他病得不轻，还要去借粮","你知道朝局乱、百姓苦。但你不打算站任何一边","把淳安、建德那些染了疫的人救下来","手上这点医术，和那点不肯低头的性子"]
+  ];
+  /* 修正：沈一石那行阵营写错了，用代码统一 */
+  FOLK.forEach(function (f) { if (f[0] === 'shenyishi') f[2] = '商人'; });
+
+  var CAMP_ORDER = ['宫里', '内阁', '司礼监', '地方', '商人', '市井'];
+  var folkBox = document.getElementById('dtFolk');
+  var folkCard = {};
+  if (folkBox) {
+    CAMP_ORDER.forEach(function (camp) {
+      var list = FOLK.filter(function (f) { return f[2] === camp; });
+      if (!list.length) return;
+      var t = document.createElement('div');
+      t.className = 'dt-camp';
+      t.textContent = camp;
+      folkBox.appendChild(t);
+      var g = document.createElement('div');
+      g.className = 'dt-folk';
+      list.forEach(function (f) {
+        var card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'dt-card';
+        card.innerHTML = '<span class="tag">' + camp + '</span>' +
+          '<img src="' + BASE + 'chars/' + f[0] + '.jpg" alt="' + f[1] + '" loading="lazy">' +
+          '<div class="nm">' + f[1] + '</div>' +
+          '<div class="ds">' + f[3] + '</div>';
+        card.addEventListener('click', function () { useFolk(f, card); });
+        g.appendChild(card);
+        folkCard[f[0]] = card;
+      });
+      folkBox.appendChild(g);
+    });
+  }
+
+  function useFolk(f, card) {
+    for (var k in folkCard) folkCard[k].classList.remove('on');
+    if (card) card.classList.add('on');
+    var set = function (id, v) { var e = document.getElementById(id); if (e) e.value = v; };
+    set('f-time', f[4]); set('f-who', f[1] + '，' + f[5]); set('f-age', f[6]);
+    set('f-where', f[7]); set('f-doing', f[8]); set('f-know', f[9]);
+    set('f-want', f[10]); set('f-fear', f[11]);
+    refresh();
+    var fb = document.getElementById('dtFb3');
+    if (fb) {
+      fb.textContent = '✓ 已按「' + f[1] + '」填好开场，去「开局」那一页看一下';
+      fb.classList.add('show');
+      setTimeout(function () { fb.classList.remove('show'); }, 3000);
+    }
+    gotoTab('p-kai');
+  }
+
+  var rand = document.getElementById('dtRand');
+  if (rand) {
+    rand.addEventListener('click', function () {
+      var f = FOLK[Math.floor(Math.random() * FOLK.length)];
+      useFolk(f, folkCard[f[0]]);
+    });
+  }
+
+  /* ═══════ 复制 ═══════ */
+  function copyText(t, fb) {
+    var show = function (m) {
+      if (!fb) return;
+      fb.textContent = m; fb.classList.add('show');
+      setTimeout(function () { fb.classList.remove('show'); }, 2400);
+    };
+    var fallback = function () {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = t; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+        document.body.appendChild(ta); ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        show(ok ? '✓ 已复制' : '★ 复制失败，请手动选中');
+      } catch (e) { show('★ 复制失败，请手动选中'); }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () { show('✓ 已复制'); }, fallback);
+    } else fallback();
+  }
+
+  var ca = document.getElementById('dtCopyActs');
+  if (ca) {
+    ca.addEventListener('click', function () {
+      var L = ['【大明王朝1566 · 可开场的时间点】', ''];
+      ACTS.forEach(function (d, i) { L.push((i + 1) + '. ' + d[0] + '　' + d[1] + '　（' + d[2] + '）'); });
+      L.push('', '（选一个，或者自己写一个年月）');
+      copyText(L.join('\n'), document.getElementById('dtFb2'));
+    });
+  }
+
+  /* ═══════ 开局表单 ═══════ */
+  var F = {
+    time: document.getElementById('f-time'), who: document.getElementById('f-who'),
+    age: document.getElementById('f-age'), where: document.getElementById('f-where'),
+    doing: document.getElementById('f-doing'), know: document.getElementById('f-know'),
+    want: document.getElementById('f-want'), fear: document.getElementById('f-fear')
+  };
+  var out = document.getElementById('dtOut');
+  var fb = document.getElementById('dtFb');
+
+  function build() {
+    var g = function (k) { return (F[k] && F[k].value || '').trim(); };
+    var L = ['【大明王朝1566】', ''];
+    L.push('时间点：' + (g('time') || '（未填）'));
+    L.push('我是谁：' + (g('who') || '（未填）'));
+    if (g('age')) L.push('今年：' + g('age'));
+    L.push('我此刻在哪：' + (g('where') || '（未填）'));
+    L.push('我在做什么：' + (g('doing') || '（未填）'));
+    L.push('我知道多少：' + (g('know') || '（未填）'));
+    L.push('我想要什么：' + (g('want') || '（未填）'));
+    L.push('我怕失去什么：' + (g('fear') || '（未填）'));
+    L.push('');
+    L.push('——请按这个开局，正文 1200 字以上。');
+    return L.join('\n');
+  }
+  function refresh() { if (out) out.textContent = build(); }
+  for (var k in F) if (F[k]) F[k].addEventListener('input', refresh);
+  refresh();
+
+  var cb = document.getElementById('dtCopy');
+  if (cb) cb.addEventListener('click', function () { copyText(build(), fb); });
+
+  var clr = document.getElementById('dtClear');
+  if (clr) clr.addEventListener('click', function () {
+    for (var k2 in F) if (F[k2]) F[k2].value = '';
+    for (var k3 in folkCard) folkCard[k3].classList.remove('on');
+    refresh();
+    if (fb) { fb.textContent = '已清空'; fb.classList.add('show'); setTimeout(function () { fb.classList.remove('show'); }, 1600); }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+[
+  {
+    "zh": "嘉靖",
+    "py": "jiajing",
+    "camp": "宫里",
+    "desc": "皇帝 · 二十多年不上朝，住西苑修道",
+    "img": "chars/jiajing.jpg"
+  },
+  {
+    "zh": "裕王",
+    "py": "yuwang",
+    "camp": "宫里",
+    "desc": "皇储 · 宫里唯一能替清流说话的人",
+    "img": "chars/yuwang.jpg"
+  },
+  {
+    "zh": "李妃",
+    "py": "lifei",
+    "camp": "宫里",
+    "desc": "裕王妃 · 见识过人，一手献经送严党上路",
+    "img": "chars/lifei.jpg"
+  },
+  {
+    "zh": "严嵩",
+    "py": "yansong",
+    "camp": "内阁",
+    "desc": "首辅 · 八十岁，代天执笔二十年",
+    "img": "chars/yansong.jpg"
+  },
+  {
+    "zh": "严世蕃",
+    "py": "yanshifu",
+    "camp": "内阁",
+    "desc": "小阁老 · 独眼，两京一十三省一手抓",
+    "img": "chars/yanshifu.jpg"
+  },
+  {
+    "zh": "徐阶",
+    "py": "xujie",
+    "camp": "内阁",
+    "desc": "次辅 · 能忍，倒严最狠的一手是他出的",
+    "img": "chars/xujie.jpg"
+  },
+  {
+    "zh": "高拱",
+    "py": "gaogong",
+    "camp": "内阁",
+    "desc": "阁臣 · 直、傲，藏不住话",
+    "img": "chars/gaogong.jpg"
+  },
+  {
+    "zh": "张居正",
+    "py": "zhangjuzheng",
+    "camp": "内阁",
+    "desc": "阁臣 · 眼光最远，也最能等",
+    "img": "chars/zhangjuzheng.jpg"
+  },
+  {
+    "zh": "吕芳",
+    "py": "lufang",
+    "camp": "司礼监",
+    "desc": "掌印太监 · 三思：思危、思退、思变",
+    "img": "chars/lufang.jpg"
+  },
+  {
+    "zh": "陈洪",
+    "py": "chenhong",
+    "camp": "司礼监",
+    "desc": "秉笔太监 · 奉旨打人打得最狠",
+    "img": "chars/chenhong.jpg"
+  },
+  {
+    "zh": "杨金水",
+    "py": "yangjinshui",
+    "camp": "司礼监",
+    "desc": "织造局总管 · 手里过的是丝绸和银子",
+    "img": "chars/yangjinshui.jpg"
+  },
+  {
+    "zh": "胡宗宪",
+    "py": "huzongxian",
+    "camp": "地方",
+    "desc": "浙直总督 · 上面有公婆，底下有儿女，两头不讨好",
+    "img": "chars/huzongxian.jpg"
+  },
+  {
+    "zh": "赵贞吉",
+    "py": "zhaozhenji",
+    "camp": "地方",
+    "desc": "浙江巡抚 · 苦一苦百姓，骂名我来担",
+    "img": "chars/zhaozhenji.jpg"
+  },
+  {
+    "zh": "海瑞",
+    "py": "hairui",
+    "camp": "地方",
+    "desc": "淳安知县 → 户部主事 · 天下第一直人",
+    "img": "chars/hairui.jpg"
+  },
+  {
+    "zh": "高翰文",
+    "py": "gaohanwen",
+    "camp": "地方",
+    "desc": "杭州知府 · 以为道理讲通了事情就能办",
+    "img": "chars/gaohanwen.jpg"
+  },
+  {
+    "zh": "郑泌昌",
+    "py": "zhengmichang",
+    "camp": "地方",
+    "desc": "浙江布政使 · 严党在浙江的刀",
+    "img": "chars/zhengmichang.jpg"
+  },
+  {
+    "zh": "沈一石",
+    "py": "shenyishi",
+    "camp": "商人",
+    "desc": "江南丝绸巨商 · 这张网里最没有退路的人",
+    "img": "chars/shenyishi.jpg"
+  },
+  {
+    "zh": "芸娘",
+    "py": "yunniang",
+    "camp": "商人",
+    "desc": "织造局的女子 · 手里攥着沈一石托付的血经",
+    "img": "chars/yunniang.jpg"
+  },
+  {
+    "zh": "齐大柱",
+    "py": "qidazhu",
+    "camp": "市井",
+    "desc": "淳安桑农 · 被几个大人物来回利用，又活了下来",
+    "img": "chars/qidazhu.jpg"
+  },
+  {
+    "zh": "李时珍",
+    "py": "lishizhen",
+    "camp": "市井",
+    "desc": "医者 · 不站边，只救人",
+    "img": "chars/lishizhen.jpg"
+  }
+]
