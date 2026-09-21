@@ -517,7 +517,11 @@ textarea.dt-in { min-height: 62px; }
    ⚠ 用 absolute 不用 fixed —— 卡里渲染时 fixed 会盖住整个聊天界面，
      这里只让它覆盖 .dt 这块，点完就消失 */
 .dt-cover {
-  position: absolute; inset: 0; z-index: 60;
+  /* ⚠ 不能用 inset:0 —— .dt 是个长页面（实测 3351px），inset:0 会把门撑到整个文档高，
+     图只占 18%、下面挂 2500px 空白。只盖一屏就对了 */
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 100vh;
+  z-index: 60;
   display: flex; flex-direction: column;
   align-items: center; justify-content: flex-start;   /* ⚠ 贴顶 —— 居中会让上下空一大片，图被压小 */
   padding: 1.2rem 1.2rem 1.5rem;
@@ -535,8 +539,8 @@ textarea.dt-in { min-height: 62px; }
   pointer-events: none;
 }
 .dt-cover img {
-  max-height: 76vh;
-  max-width: 94%;
+  max-height: 66vh;
+  max-width: 92%;
   border: 1px solid rgba(214, 180, 92, 0.32);
   border-radius: 2px;
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.82), 0 0 46px rgba(143, 29, 23, 0.24);
@@ -547,7 +551,7 @@ textarea.dt-in { min-height: 62px; }
   to { opacity: 1; transform: none; filter: brightness(1); }
 }
 .dt-cover .cv-t {
-  margin-top: 1.5rem;
+  margin-top: 1.1rem;
   font-size: 1.04rem;
   letter-spacing: 0.44em;
   text-indent: 0.44em;
@@ -563,7 +567,7 @@ textarea.dt-in { min-height: 62px; }
   animation: dtCoverIn 1.6s .4s cubic-bezier(.22,.61,.36,1) both;
 }
 .dt-cover .cv-go {
-  margin-top: 1.9rem;
+  margin-top: 1.35rem;
   padding: 0.62rem 1.7rem;
   font-size: 0.9rem;
   letter-spacing: 0.3em;
@@ -905,6 +909,10 @@ textarea.dt-in { min-height: 62px; }
         ※ 点一下填进去。要全部三十三个时间点，去「幕」那一页。
       </p>
       <div class="dt-times" id="dtTimes"></div>
+      <div class="dt-f">
+        <label for="f-time-custom">或者自己写一个（不在上面十个里也行）</label>
+        <input class="dt-in" id="f-time-custom" placeholder="例：嘉靖四十年七月初三　／　嘉靖四十三年　冬　／　嘉靖四十四年正月">
+      </div>
 
       <div class="dt-form">
         <div class="dt-f">
@@ -1198,9 +1206,25 @@ textarea.dt-in { min-height: 62px; }
         b.classList.add('on');
         var e = document.getElementById('f-time');
         if (e) e.value = t[0] + '　' + t[1];
+        var cu = document.getElementById('f-time-custom');
+        if (cu) cu.value = '';                 // 选了预设就清掉自定义，免得两边对不上
         refresh();
       });
       tbox.appendChild(b);
+    });
+  }
+
+  /* 自定义时间：和上面十个共用 f-time 这个字段 */
+  var tcustom = document.getElementById('f-time-custom');
+  if (tcustom) {
+    tcustom.addEventListener('input', function () {
+      if (tbox) {
+        var all = tbox.querySelectorAll('.dt-tm');
+        for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
+      }
+      var e = document.getElementById('f-time');
+      if (e) e.value = tcustom.value.trim();
+      refresh();
     });
   }
 
