@@ -39,6 +39,7 @@
   margin: 0 auto;
   border-radius: 3px;
   overflow: hidden;
+  position: relative;   /* 封面过场靠它做定位锚（不用 fixed，否则在卡里会盖住整个聊天区） */
   -webkit-font-smoothing: antialiased;
 }
 .dt *, .dt *::before, .dt *::after { box-sizing: border-box; }
@@ -512,6 +513,104 @@ textarea.dt-in { min-height: 62px; }
 }
 .dt-foot q { color: var(--gold); font-style: normal; quotes: none; }
 
+/* ══════════ 封面过场（点一下才进正文） ══════════
+   ⚠ 用 absolute 不用 fixed —— 卡里渲染时 fixed 会盖住整个聊天界面，
+     这里只让它覆盖 .dt 这块，点完就消失 */
+.dt-cover {
+  position: absolute; inset: 0; z-index: 60;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 2.2rem 1.4rem;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 40%, rgba(143, 29, 23, 0.22), transparent 72%),
+    linear-gradient(180deg, #0d0b09, #060505);
+  cursor: pointer;
+  transition: opacity .85s ease, transform 1.15s cubic-bezier(.4,0,.2,1), filter .85s ease;
+}
+.dt-cover.gone {
+  opacity: 0;
+  transform: scale(1.07);
+  filter: blur(3px);
+  pointer-events: none;
+}
+.dt-cover img {
+  max-height: 62vh;
+  max-width: 88%;
+  border: 1px solid rgba(214, 180, 92, 0.32);
+  border-radius: 2px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.82), 0 0 46px rgba(143, 29, 23, 0.24);
+  animation: dtCoverIn 1.6s cubic-bezier(.22,.61,.36,1) both;
+}
+@keyframes dtCoverIn {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); filter: brightness(0.5); }
+  to { opacity: 1; transform: none; filter: brightness(1); }
+}
+.dt-cover .cv-t {
+  margin-top: 1.5rem;
+  font-size: 1.04rem;
+  letter-spacing: 0.44em;
+  text-indent: 0.44em;
+  color: var(--gold3);
+  text-shadow: 0 0 22px rgba(214, 180, 92, 0.4);
+  animation: dtCoverIn 1.6s .25s cubic-bezier(.22,.61,.36,1) both;
+}
+.dt-cover .cv-s {
+  margin-top: 0.55rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  color: var(--txt3);
+  animation: dtCoverIn 1.6s .4s cubic-bezier(.22,.61,.36,1) both;
+}
+.dt-cover .cv-go {
+  margin-top: 1.9rem;
+  padding: 0.62rem 1.7rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: #f4e6c8;
+  border: 1px solid rgba(192, 57, 43, 0.62);
+  border-radius: 2px;
+  background: rgba(143, 29, 23, 0.16);
+  animation: dtBreath 2.6s ease-in-out infinite;
+  transition: background .25s, border-color .25s;
+}
+.dt-cover:hover .cv-go { background: rgba(143, 29, 23, 0.42); border-color: var(--zhu3); }
+@keyframes dtBreath {
+  0%, 100% { opacity: 0.62; box-shadow: 0 0 0 rgba(143,29,23,0); }
+  50% { opacity: 1; box-shadow: 0 0 26px rgba(143, 29, 23, 0.5); }
+}
+.dt-cover .cv-line {
+  position: absolute; left: 6%; right: 6%; bottom: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(214,180,92,.22), transparent);
+}
+
+/* ══════════ 开局页：挑时间 ══════════ */
+.dt-times {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
+  gap: 0.6rem;
+  margin: 1.1rem 0 1.5rem;
+}
+.dt-tm {
+  position: relative;
+  padding: 0.68rem 0.85rem;
+  text-align: left;
+  background: var(--ink2);
+  border: 1px solid var(--line);
+  border-left: 3px solid rgba(143, 29, 23, 0.5);
+  border-radius: 2px;
+  color: var(--txt);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color .18s, background .18s, transform .16s;
+}
+.dt-tm:hover { border-left-color: var(--zhu2); background: var(--ink3); transform: translateX(2px); }
+.dt-tm.on { border-left-color: var(--gold2); background: var(--ink3); box-shadow: inset 0 0 0 1px rgba(214,180,92,.28); }
+.dt-tm b { display: block; font-weight: 600; letter-spacing: 0.05em; }
+.dt-tm span { display: block; margin-top: 2px; font-size: 0.76rem; color: var(--txt3); letter-spacing: 0.04em; }
+
 @media (max-width: 620px) {
   .dt { font-size: 15px; }
   .dt-hero { padding: 3rem 1rem 2.4rem; }
@@ -528,6 +627,15 @@ textarea.dt-in { min-height: 62px; }
 </head>
 <body>
 <div class="dt">
+
+  <!-- 封面过场：点一下才露出下面的东西 -->
+  <div class="dt-cover" id="dtCover" role="button" tabindex="0" aria-label="点击进入">
+    <img src="https://filomenosnyder-stack.github.io/datang-1566/cover.jpg" alt="大明王朝1566">
+    <div class="cv-t">大明王朝 1566</div>
+    <div class="cv-s">嘉靖三十九年 —— 四十五年</div>
+    <div class="cv-go">点 击 入 局</div>
+    <div class="cv-line"></div>
+  </div>
 
   <header class="dt-hero">
     <div class="dt-seal">嘉</div>
@@ -765,6 +873,12 @@ textarea.dt-in { min-height: 62px; }
         填完点复制，粘到对话框里就能开。
       </p>
 
+      <h2>挑个时间</h2>
+      <p style="color:var(--txt3);font-size:.86rem;margin-top:-.4rem;">
+        ※ 点一下就把时间填进去。也可以自己去「幕」那一页挑全部三十三个时间点。
+      </p>
+      <div class="dt-times" id="dtTimes"></div>
+
       <div class="dt-form">
         <div class="dt-f">
           <label for="f-time">时间点</label>
@@ -827,6 +941,20 @@ textarea.dt-in { min-height: 62px; }
 (function () {
   "use strict";
   var BASE = "https://filomenosnyder-stack.github.io/datang-1566/";
+
+  /* ═══════ 封面过场 ═══════ */
+  var cover = document.getElementById('dtCover');
+  function enter() {
+    if (!cover || cover.classList.contains('gone')) return;
+    cover.classList.add('gone');
+    setTimeout(function () { cover.style.display = 'none'; }, 1300);
+  }
+  if (cover) {
+    cover.addEventListener('click', enter);
+    cover.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
+    });
+  }
 
   /* ═══════ 页签 ═══════ */
   var nav = document.getElementById('dtNav');
@@ -1019,6 +1147,38 @@ textarea.dt-in { min-height: 62px; }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(t).then(function () { show('✓ 已复制'); }, fallback);
     } else fallback();
+  }
+
+  /* ═══════ 开局页：挑时间（十个关键口子） ═══════ */
+  var TIMES = [
+    ["39年腊月廿九", "序幕 · 周云逸杖毙", "一冬无雪，午门外先见了血"],
+    ["40年正月十五", "御前财政会议", "改稻为桑四个字定了下来"],
+    ["40年四月", "毁堤淹田", "全剧的第一根导火索"],
+    ["40年六月", "海瑞到任", "天下第一直人进场"],
+    ["40年八月", "沈一石自焚", "四箱账册进了京"],
+    ["40年七至九月", "台州大捷", "前方在死人，后方在算账"],
+    ["41年正月十五", "严党倒台", "二十年的一朝散了"],
+    ["45年正月初五", "百官跪谏", "京官举着奏疏跪在禁门外"],
+    ["45年二月廿三", "天下第一疏", "海瑞背后摆着一具白木棺材"],
+    ["45年十二月", "结局", "嘉靖驾崩，裕王继位改元隆庆"]
+  ];
+  var tbox = document.getElementById('dtTimes');
+  if (tbox) {
+    TIMES.forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'dt-tm';
+      b.innerHTML = '<b>' + t[0] + '　' + t[1] + '</b><span>' + t[2] + '</span>';
+      b.addEventListener('click', function () {
+        var all = tbox.querySelectorAll('.dt-tm');
+        for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
+        b.classList.add('on');
+        var e = document.getElementById('f-time');
+        if (e) e.value = t[0] + '　' + t[1];
+        refresh();
+      });
+      tbox.appendChild(b);
+    });
   }
 
   var ca = document.getElementById('dtCopyActs');
