@@ -517,9 +517,11 @@ textarea.dt-in { min-height: 62px; }
    ⚠ 用 absolute 不用 fixed —— 卡里渲染时 fixed 会盖住整个聊天界面，
      这里只让它覆盖 .dt 这块，点完就消失 */
 .dt-cover {
-  /* ⚠ 不能用 inset:0 —— .dt 是个长页面（实测 3351px），inset:0 会把门撑到整个文档高，
-     图只占 18%、下面挂 2500px 空白。只盖一屏就对了 */
-  position: absolute; top: 0; left: 0; right: 0;
+  /* ⚠ 三种定位都试过，只有这个对：
+     · absolute + inset:0 —— 门被撑成整个文档高（实测 3351px），图只占 18%、下面挂 2500px 空白
+     · absolute + height:100vh —— 门高对了，但只盖一屏，往下滚就漏出正文（没点击就进去了）
+     · fixed + inset:0 —— 贴视口、盖满、挡住滚动，点一下 display:none 走人 ✓ */
+  position: fixed; inset: 0;
   height: 100vh;
   z-index: 60;
   display: flex; flex-direction: column;
