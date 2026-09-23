@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120a12"/>
+      <stop offset="52%" stop-color="#0a0509"/>
+      <stop offset="100%" stop-color="#050305"/>
+    </linearGradient>
+    <radialGradient id="curse" cx="50%" cy="30%" r="66%">
+      <stop offset="0" stop-color="#c0392b" stop-opacity=".22"/>
+      <stop offset="48%" stop-color="#7c1f3a" stop-opacity=".10"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="slash" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e04b3a" stop-opacity="0"/>
+      <stop offset="46%" stop-color="#ff6a52" stop-opacity=".85"/>
+      <stop offset="100%" stop-color="#e04b3a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff3ee"/>
+      <stop offset="58%" stop-color="#f0d9d2"/>
+      <stop offset="100%" stop-color="#b8635a"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="frame"><rect x="0" y="0" width="1200" height="675" rx="0"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="675" fill="url(#bg)"/>
+    <rect width="1200" height="675" fill="url(#curse)"/>
+
+    <!-- 纸门格栅：涩谷的街景被切成格子 -->
+    <g stroke="#3a1d24" stroke-width="1" opacity=".5">
+      <path d="M0 96H1200M0 192H1200M0 288H1200M0 384H1200M0 480H1200M0 576H1200"/>
+      <path d="M120 0V675M240 0V675M360 0V675M480 0V675M600 0V675M720 0V675M840 0V675M960 0V675M1080 0V675"/>
+    </g>
+
+    <!-- 斩击：解 / 捌 -->
+    <g stroke="url(#slash)" stroke-linecap="round" filter="url(#glow)">
+      <path d="M-40 168 L520 -20" stroke-width="5"/>
+      <path d="M-40 300 L700 8" stroke-width="3"/>
+      <path d="M120 700 L760 96" stroke-width="4"/>
+      <path d="M420 700 L1080 150" stroke-width="6"/>
+      <path d="M700 700 L1240 300" stroke-width="3"/>
+      <path d="M-40 470 L430 246" stroke-width="2"/>
+      <path d="M900 -30 L1240 150" stroke-width="2"/>
+    </g>
+
+    <!-- 背后的两面宿傩：四手双面的几何暗示 -->
+    <g opacity=".2" fill="none" stroke="#ff8a72" stroke-width="2.5" stroke-linecap="round">
+      <circle cx="600" cy="300" r="86"/>
+      <circle cx="600" cy="300" r="112" stroke-opacity=".55"/>
+      <path d="M600 214V132M600 386V468"/>
+      <path d="M520 236 L392 158M680 236 L808 158"/>
+      <path d="M520 366 L392 444M680 366 L808 444"/>
+      <path d="M548 282h-28M680 282h28M548 322h-28M680 322h28"/>
+    </g>
+
+    <!-- 领域展开的圆 · 半径 200m -->
+    <g opacity=".34">
+      <circle cx="600" cy="322" r="230" fill="none" stroke="#8e2f45" stroke-width="1.6" stroke-dasharray="3 9"/>
+      <circle cx="600" cy="322" r="300" fill="none" stroke="#5d2334" stroke-width="1" stroke-dasharray="2 14"/>
+    </g>
+
+    <!-- 标题 -->
+    <text x="600" y="212" text-anchor="middle"
+          font-family="'Source Han Sans SC','Noto Sans SC','Microsoft YaHei','PingFang SC',sans-serif"
+          font-size="94" font-weight="900" letter-spacing="10" fill="url(#titleGrad)" filter="url(#glow)">轮到你打宿傩了</text>
+
+    <g font-family="'Source Han Sans SC','Noto Sans SC','Microsoft YaHei','PingFang SC',sans-serif"
+       font-size="25" fill="#c9a5a0" letter-spacing="4" text-anchor="middle">
+      <text x="600" y="268">要上吗……？</text>
+      <text x="600" y="306" fill="#e0705c" font-weight="700">我打宿傩……！？</text>
+      <text x="600" y="344">诶……真的假的？</text>
+    </g>
+
+    <!-- 底部：咒术回战 · 娱乐卡 -->
+    <line x1="330" y1="446" x2="870" y2="446" stroke="#7a2b3a" stroke-width="1.4"/>
+    <g font-family="'Source Han Sans SC','Noto Sans SC','Microsoft YaHei','PingFang SC',sans-serif"
+       font-size="21" fill="#8d7570" letter-spacing="3" text-anchor="middle">
+      <text x="600" y="500">咒术回战 · 涩谷事变 · 人外魔境新宿决战</text>
+      <text x="600" y="540" fill="#6b5854" font-size="18">人物 / 战力 / 样貌 / 场景　由你自选　——　四维内核处理器负责推演</text>
+    </g>
+
+    <!-- 角落：2.5 -->
+    <text x="1140" y="626" text-anchor="end"
+          font-family="'Source Han Sans SC','Noto Sans SC','Microsoft YaHei',sans-serif"
+          font-size="30" font-weight="700" fill="#b03a2e" opacity=".72">2.5</text>
+    <text x="1144" y="646" text-anchor="end"
+          font-family="'Source Han Sans SC','Noto Sans SC','Microsoft YaHei',sans-serif"
+          font-size="14" fill="#6b5854" opacity=".8">五条悟，腰斩</text>
+
+    <!-- 四边压暗 -->
+    <rect width="1200" height="675" fill="none" stroke="#000" stroke-width="60" opacity=".38"/>
+  </g>
+</svg>
