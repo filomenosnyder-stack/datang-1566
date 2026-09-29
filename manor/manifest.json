@@ -1,0 +1,62 @@
+[
+ {
+  "file": "c1_alice.jpg",
+  "bytes": 193892,
+  "md5": "8339bd95d8"
+ },
+ {
+  "file": "c2_matilda.jpg",
+  "bytes": 200543,
+  "md5": "83b2150a1c"
+ },
+ {
+  "file": "c3_emma.jpg",
+  "bytes": 197342,
+  "md5": "2dba5932cc"
+ },
+ {
+  "file": "c4_juliana.jpg",
+  "bytes": 185624,
+  "md5": "f1f8226845"
+ },
+ {
+  "file": "c5_joan.jpg",
+  "bytes": 222217,
+  "md5": "a1ae8aa398"
+ },
+ {
+  "file": "c6_cecily.jpg",
+  "bytes": 162152,
+  "md5": "0e399a9181"
+ },
+ {
+  "file": "scene_castle.jpg",
+  "bytes": 232720,
+  "md5": "3bca0198e7"
+ },
+ {
+  "file": "scene_cover.jpg",
+  "bytes": 278859,
+  "md5": "2b54fc9ae6"
+ },
+ {
+  "file": "scene_field.jpg",
+  "bytes": 286212,
+  "md5": "7401cfb0cc"
+ },
+ {
+  "file": "scene_market.jpg",
+  "bytes": 276823,
+  "md5": "70a3dad954"
+ },
+ {
+  "file": "scene_tower.jpg",
+  "bytes": 239550,
+  "md5": "67cc0c5d38"
+ },
+ {
+  "file": "scene_village.jpg",
+  "bytes": 302299,
+  "md5": "2cef57ea0c"
+ }
+]
