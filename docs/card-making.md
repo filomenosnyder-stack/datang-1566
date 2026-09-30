@@ -269,7 +269,144 @@ detailed anime painted background, no 3D render, no plastic gloss, no photoreali
 
 ---
 
-## 十 · 导出给用户
+## 十 · 上传素材到仓库（GitHub Pages）
+
+卡面里的图必须是**绝对 URL**，所以素材得先传到公开图床。**现在用的是 GitHub Pages。**
+
+### 10.1 仓库
+
+```
+本地   <shetuan>/_dm_host/
+远端   https://github.com/filomenosnyder-stack/datang-1566
+站点   https://filomenosnyder-stack.github.io/datang-1566/
+分支   main
+```
+
+⚠ **remote 里不要嵌 token**（`https://user:token@github.com/…`）—— 它会明文留在 `.git/config` 里。
+这台机器走的是 **Git Credential Manager**（`credential.helper=manager`），`git push` 自己弹认证，**不用手写 token**。
+
+### 10.2 一张卡一个目录
+
+```
+_dm_host/
+  gaihuadao/     白霜（地雷表妹）
+  manor/         庄园主模拟器
+  korea/         现代韩国模拟器
+  heqin/         和亲
+  chars/  daomu/  guhuozai/  …   更早的
+```
+
+### 10.3 ⚠⚠ 目录结构必须对上 `assetBase`
+
+构建脚本把 `src="assets/x.jpg"` 拼成 **`{assetBase}assets/x.jpg`**。所以：
+
+```
+meta.json   "assetBase": "https://…/datang-1566/gaihuadao/"
+卡面写的     <img src="assets/cover.jpg">
+实际要传     _dm_host/gaihuadao/assets/cover.jpg      ← 这层 assets/ 不能少
+```
+
+⚠ **我漏过这层** —— 图放在 `gaihuadao/cover.jpg`，卡里要的是 `gaihuadao/assets/cover.jpg`，**两张图全 404**。
+
+### 10.4 文件名
+
+- ⚠ **只用 ASCII。** 中文名进 URL 会变成 `%E5%9C%B0%E9%9B%B7…` 一长串（我第一版就是 `01_阿丽思.jpg`）
+- 小写 + 连字符：`c1_alice.jpg`、`cover-v2.jpg`
+- ⚠⚠ **换图必须换文件名**（见 10.6）
+
+### 10.5 压缩到 400 KB 以内
+
+```python
+from PIL import Image
+import os
+im = Image.open(src).convert('RGB')
+if im.width > W:                       # 立绘 W=820~1100，封面 W=1100~1600
+    im = im.resize((W, round(im.height*W/im.width)), Image.LANCZOS)
+q = 92
+while q >= 60:
+    im.save(dst, 'JPEG', quality=q, optimize=True, progressive=True)
+    if os.path.getsize(dst) <= 400_000: break
+    q -= 4
+```
+
+### 10.6 ⚠⚠ 换图必须换文件名（血的教训）
+
+平台和浏览器**按 URL 缓存**。`gaihuadao/assets/cover.jpg` 内容换了、名字没换 → **永远给你看旧图**。
+
+**出过一次**：用户要换成他自己的两张图，我覆盖了同名文件。他连问三次「这不是我的吧」「怎么还是的」。我查文件、查 CSS、查服务器，全是对的 —— **只有缓存是旧的**。
+
+**正确做法：**
+
+```
+cover.jpg      →  cover-v2.jpg
+p1_shuang.jpg  →  p1-v2.jpg
+```
+
+卡面同步改名，**并且把旧文件名从仓库里删掉** —— 旧地址 404，缓存才会被迫去拉新的。
+
+```bash
+git rm --cached <栏目>/assets/cover.jpg <栏目>/assets/p1_shuang.jpg
+rm -f <栏目>/assets/cover.jpg <栏目>/assets/p1_shuang.jpg
+```
+
+### 10.7 上传
+
+```bash
+cd <shetuan>/_dm_host
+cp "../<卡名>（制卡素材）/src/frontend/assets/"*.jpg <栏目>/assets/
+git add -A <栏目>
+git -c user.name=dm -c user.email=dm@dm commit -q -m "<栏目>: 说明"
+git push -q origin HEAD
+```
+
+### 10.8 验证（两级地址，生效速度不一样）
+
+| 地址 | 生效 |
+|---|---|
+| `raw.githubusercontent.com/<owner>/<repo>/main/<路径>` | **立刻** |
+| `filomenosnyder-stack.github.io/<repo>/<路径>` | **30 秒 ~ 2 分钟** |
+
+⚠ **Pages 有延迟是正常的，要轮询**：
+
+```bash
+for i in 1 2 3 4 5 6; do
+  sleep 30
+  c=$(curl -s -o /dev/null -w "%{http_code}" "<Pages URL>")
+  echo "$i: $c"; [ "$c" = "200" ] && break
+done
+```
+
+⚠⚠ **raw 200 而 Pages 404 = 还没构建完，不是失败。** 别急着改代码。
+
+### 10.9 ⚠⚠ 上传前必做：扫 key
+
+**这个仓库是公开的。**
+
+```bash
+cd <shetuan>/_dm_host
+# ① 待传的内容里有没有疑似密钥
+git diff --cached -U0 | grep -iE "consolesk|bearer |sk-[A-Za-z0-9]{16}|api[_-]?key" && echo "⚠⚠ 停，先看这是什么"
+# ② 全历史有没有出现过（含已删除的文件）
+git log --all -p | grep -c "<真 key 的前 12 位>"
+```
+
+**真 key 只存在一个地方**：`<shetuan>/_botcf/key.txt`
+—— **它永远不该进这个仓库。**
+
+⚠ 写文档、写注释、写报告时提到 key，**一律写占位符** `consolesk-XXXX`，不要贴真的。
+
+### 10.10 ⚠ 不要传什么
+
+| | |
+|---|---|
+| ❌ | **`<卡名>（制卡素材）/` 整个目录** —— 里面有 `src/`、`build.mjs`、世界书源文件、提示词 |
+| ❌ | 卡本体 `.json`（那是给用户导入的，不是给图床的） |
+| ❌ | key、token、cookie、`.git/config` 里嵌了 token 的 remote |
+| ✅ | **只传图片、字体、音频**这类卡面要引用的静态资源 |
+
+---
+
+## 十一 · 导出给用户
 
 ⚠⚠ **用户那份 JSON 是从平台 round-trip 回来的**，不是你的构建产物：
 
@@ -303,7 +440,7 @@ shutil.copy2(f, f+'.bak-'+时间戳)                 # 先备份
 
 ---
 
-## 十一 · 验证（不验证等于没做）
+## 十二 · 验证（不验证等于没做）
 
 **1 · 构建校验**（写进 `build.mjs`，不过就不出卡）
 - 顶层 4 键、`braindance` 12 键
@@ -333,7 +470,7 @@ chrome --headless=new --disable-gpu --no-sandbox \
 
 ---
 
-## 十二 · 文风（用户骂出来的）
+## 十三 · 文风（用户骂出来的）
 
 **❌ 最招人烦的是「给行为下抒情结论」** —— 列完事实再补一句解释它什么意思。
 
@@ -358,7 +495,7 @@ chrome --headless=new --disable-gpu --no-sandbox \
 
 ---
 
-## 十三 · 开放世界（如果这张卡是）
+## 十四 · 开放世界（如果这张卡是）
 
 **不许做的：**
 - ❌ **排节奏** —— 不写「第二轮该摸清家底」「头两三年你什么都赚不到」
@@ -372,7 +509,7 @@ chrome --headless=new --disable-gpu --no-sandbox \
 
 ---
 
-## 十四 · 不替玩家做任何事
+## 十五 · 不替玩家做任何事
 
 ```
 ❌ 不替他说话    ❌ 不替他选择
@@ -387,7 +524,7 @@ chrome --headless=new --disable-gpu --no-sandbox \
 
 ---
 
-## 十五 · 全流程 checklist
+## 十六 · 全流程 checklist
 
 ```
 □ 1  建目录 <卡名>（制卡素材）/src/{worldbook,frontend/assets}
@@ -409,7 +546,7 @@ chrome --headless=new --disable-gpu --no-sandbox \
 
 ---
 
-## 十六 · 我踩过的坑（按疼的程度）
+## 十七 · 我踩过的坑（按疼的程度）
 
 1. **⚠⚠ 以为自己判断对了平台限制，其实是自己的 bug。** 我把「前端点不动」误诊成「平台剥 script」，为此把整张卡改成纯 CSS。后来发现平台根本不剥 —— 大明卡里 16KB 脚本跑得好好的。**先怀疑自己。**
 2. **⚠⚠ 同名换图 = 缓存不变。** 换图必须换文件名。
